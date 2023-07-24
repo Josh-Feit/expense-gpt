@@ -1,0 +1,17 @@
+{% extends 'base/main.html' %}
+{% block content %}
+<div class="main-container">
+    <div class="main-child">
+        <a href="{% url 'transactions' %}" class="back">&#8592;</a>
+        <h3>Add Transaction</h3>
+        <form type="text" method="POST" actions="/">
+            {% csrf_token %}
+            <p><div>Title: {{form.title}}</div></p>
+            <p><div>Description: {{form.description}}</div></p>
+            <p><div>Transaction Amount: {{form.quantity}}</div></p>
+            <p><div>Transaction Type: {{form.action_type}}</div></p>
+            <input class="button" type="submit" name="Add Expense">
+        </form>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,15 @@
+{% extends 'base/main.html' %}
+{% block content %}
+<div class="main-container">
+    <div class="main-child">
+        <h1>ExpenseGPT Login</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input class="button" type="submit" value="Login">
+        </form>
+        <p>Don't have an account?   <a href="{% url 'register' %}" class="button" style="padding-top: 1px; padding-bottom: 1px;">Register</a></p>
+    </div>
+</div>
+
+{% endblock content %}

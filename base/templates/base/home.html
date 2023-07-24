@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ExpenseGPT</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}"/>
+</head>
+
+<div class="header-bar">
+    <h1>ExpenseGPT</h1>
+    <span>{{request.user}}<br>
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'logout' %}" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+    </span>
+</div>
+<body>
+    <div class="home-container">
+        <div class="home-child">
+            <h3>Transaction Tracker</h3>
+            <h2>Balance: ${{balance}}</h2>
+            <a href="{% url 'createAction' %}" class="button" style="padding: 3px;">Add Transaction</a>
+            <div class="list-item"></div> 
+            {% for transaction in transactions %}
+                <div class="list-item">
+                    {% if 'Expense' in transaction.action_type %}
+                        <div style="color: red; display: inline;">{{transaction}}: ${{transaction.quantity}}</div>
+                    {% else %}
+                        <div style="color: #084f09; display: inline;">{{transaction}}: ${{transaction.quantity}}</div>
+                    {% endif %}
+                    <a href="{% url 'updateAction' transaction.id %}" class="update-action">&#x21bb;</a>
+                    <a href="{% url 'deleteAction' transaction.id %}" class="delete-action" onclick="return confirm('Are you sure you want to delete {{transaction}}?');">&#215;</a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="home-child">
+            <h3>ChatGPT Expense Helper</h3>
+            <p>Ask ChatGPT about how you should save, spend, or make money!</p>
+            <form method="POST" actions="/">
+                {% csrf_token %}
+                {{form}} 
+                <input class="button" type="submit" name="GPT_User_Entry" value="Submit">
+                <div style="font-size: 16px;">
+                    <p>Or use the predetermined questions below!
+                        <div>How should I wisely invest my balance? <input class="button" type="submit" name="GPT_Invest_Entry" value="Invest" /></div>
+                        <div style="padding-top: 2px">What are some things I could buy with my balance? <input class="button" type="submit" name="GPT_Fun_Entry" value="Buy" /></div>
+                        <div style="padding-top: 2px">If my balance is my monthly salary, what will I pay in taxes? <input class="button" type="submit" name="GPT_Taxes_Entry" value="Taxes" /></div>
+                    </p>
+                </div>
+                <p><b>{{response}}</b></p>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+
+</html>

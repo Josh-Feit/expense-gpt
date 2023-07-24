@@ -1,0 +1,17 @@
+{% extends 'base/main.html' %}
+{% block content %}
+<div class="main-container">
+    <div class="main-child">
+        <h1>Register</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <p><div>Username: {{form.username}}</div></p>
+            <p><div>Password: {{form.password1}} *</div></p>
+            <p><div>Confirm Password: {{form.password2}} *</div></p>
+            <p>*Must be at least 8 characters, and have 1 letter, number, and symbol.</p>
+            <input class="button" type="submit" value="Register">
+        </form>
+        <p>Already have an account?   <a href="{% url 'login' %}" class="button" style="padding-top: 1px; padding-bottom: 1px;">Login</a></p>
+    </div>
+</div>
+{% endblock content %}
